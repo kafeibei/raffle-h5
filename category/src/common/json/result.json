@@ -1,0 +1,14 @@
+[
+  {
+    "reward": "浪琴手表",
+    "title": "一等奖",
+    "id": "raffle01",
+    "redeemable": 1
+  },
+  {
+    "reward": "苹果手机",
+    "title": "二等奖",
+    "id": "raffle02",
+    "redeemable": 1
+  }
+]

@@ -1,0 +1,107 @@
+// 通用css
+body {
+  background-color: #f8f8f8;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.page-container {
+  height: 100vh;
+  margin: 0 auto;
+}
+
+/*
+* 弹性盒模型
+*/
+.hg-flex {
+  display: flex;
+}
+.hg-flex-center {
+  align-items:center;
+}
+.hg-flex-end {
+  flex-align:flex-end;
+}
+.hg-flex-start {
+  flex-align:flex-start;
+}
+.hg-justify-center {
+  justify-content: center;
+}
+.hg-flex-one {
+  flex: 1;
+ }
+.hg-flex-two {
+  flex: 1;
+}
+.hg-vertical {
+  flex-direction: column;
+}
+.hg-row-reverse {
+  flex-direction: row-reverse;
+}
+.hg-flex-overflow {
+  flex-wrap: wrap;
+}
+
+.hide {
+  display: none!important;
+}
+
+.clear {
+  overflow: visible;
+}
+
+.clear:after {
+  clear: both;
+  content: '.';
+  display: block;
+  visibility: hidden;
+  height: 0;
+}
+
+@keyframes rotate-loader {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// 等待效果
+.loader-area {
+  .loader-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.65);
+    border-radius: 20px;
+  }
+  .loader-progress {
+    position: relative;
+    color: #fff;
+    font-size: 32px;
+    padding-top: 124px;
+    text-align: center;
+  }
+  .loader-animate {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    left: 64px;
+    top: 32px;
+    transform: translate(-50%, 0);
+    border: 6px solid rgba(255, 255, 255, 0.6);
+    border-right-color: rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    animation: rotate-loader 0.8s infinite;
+  }
+}
