@@ -1,0 +1,56 @@
+.page-container {
+  background-color: #c437f8;
+  .instant {
+    width: 670px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  .instant-content {
+    position: relative;
+    width: 610px;
+    height: 220px;
+    margin: 40px 30px;
+    padding-left: 200px;
+    padding-top: 64px;
+    background: url('../../common/images/instant.png') no-repeat 60px center #fff;
+    background-size: 108px 108px;
+    border-radius: 8px;
+    &:after {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      width: 570px;
+      height: 180px;
+      border: 2px dashed #d6dbe9;
+      content: ' ';
+    }
+  }
+  .instant-title {
+    font-size: 32px;
+    color: #fd3f42;
+    font-weight: normal;
+  }
+  .instant-reward {
+    color: #999;
+    font-size: 24px;
+  }
+  .instant-button {
+    text-align: center;
+    font-size: 28px;
+  }
+  .raffle-reset {
+    display: inline-block;
+    width: 610px;
+    line-height: 80px;
+    background-color: #ffd800;
+    border-radius: 8px;
+    color: #ff4346;
+  }
+  .raffle-result {
+    display: inline-block;
+    margin: 30px 0 40px;
+    padding: 4px 2px;
+    border-bottom: 2px dashed #fff;
+    color: #fff;
+  }
+}

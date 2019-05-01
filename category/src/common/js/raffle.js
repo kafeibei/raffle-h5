@@ -237,7 +237,7 @@
 
   // 抽奖业务逻辑
   function Raffle () {
-    this.wrapper = $('.scratchit');
+    this.wrapper = $('.button-area')
     this.utils = window.utils
   }
 
