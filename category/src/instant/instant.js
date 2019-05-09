@@ -1,8 +1,9 @@
 (() => {
-  function Instant(options) {
+  function Instant(options, element) {
     this.options = {
       activityClass: 'activity-status'
     }
+    this.element = $(element)
     $.extend(this.options, options)
     this.init()
   }
@@ -14,7 +15,37 @@
   }
 
   Instant.prototype.initInstant = function () {
-    this.drawModal()
+    this.initModal()
+    this.renderView()
+  }
+
+  /*
+   * 重置功能
+   * @method initReset
+   * @param null
+   * */
+  Instant.prototype.initReset = function () {
+    this.renderView()
+  }
+
+  Instant.prototype.renderView = function () {
+    let message = this.limit()
+    if (message) {
+      this.utils.toast({
+        msg: message
+      })
+      this.element.find('.instant-reward').html(message)
+      this.element.find('.instant-title').html('')
+      return false
+    }
+    this.drawModal((status, data) => {
+      if (status > 0) {
+        this.element.find('.instant-reward').html(data.title)
+        this.element.find('.instant-title').html(data.reward)
+      } else {
+        this.element.find('.instant-reward').html(data)
+      }
+    })
   }
 
   /*

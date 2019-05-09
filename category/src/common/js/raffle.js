@@ -23,7 +23,6 @@
 
 		init: function () {
       this.utils = window.utils
-      this.oauth()
 			this.events()
 		},
 
@@ -36,12 +35,6 @@
 			   .on(ltype, '.btn-detail', $.proxy( this._getDetail,this))    //获奖详情
 			   .on(ltype, '.btn-back', $.proxy( this._goBack,this))  //返回
 		},
-
-    oauth: function () {
-      setTimeout(() => {
-				this.options.oauthBack && this.options.oauthBack()
-			}, 200)
-    },
 
 		draw : function (cbk) {
 			this._lottery(cbk)
@@ -57,10 +50,14 @@
             let num = this.utils.randomGap(len, 0)
             let result = json.rewards[num]
             if (result.redeemable) {
+              // 渲染抽奖弹窗
     					this.drawPop({
                 title: result.title,
-                encourage: result.reward
+                encourage: result.reward,
+                btn: 'close'
               })
+              // 本地存储抽奖结果
+              this.storageResult(result)
     				} else {
     					//未中奖
 	    				this.noAward()
@@ -79,11 +76,22 @@
       })
 		},
 
+    storageResult: function (result) {
+      let storageResult = utils.storage.get('raffle_result') || []
+      if (result) {
+        storageResult.push(result)
+        utils.storage.set('raffle_result', storageResult)
+      } else {
+        return storageResult
+      }
+    },
+
 		//未中奖
-		noAward : function () {
+		noAward: function () {
       this.drawPop({
         title: '很遗憾没有中奖',
-        encourage: '不要气馁，继续加油'
+        encourage: '不要气馁，继续加油',
+        btn: 'close'
       })
 		},
 
@@ -95,12 +103,31 @@
       let drawHtml = drawModal.removeClass('hide').html()
       drawHtml = drawHtml.replace(/{{(.*?)}}/g, (string, key) => {
         return string.replace('{{' + key + '}}', params[key])
+      }).replace(/btn-(.*?) hide/g, (string, key) => {
+        if (key === params.btn) {
+          return 'btn-' + key
+        } else {
+          return string
+        }
       })
       drawModal.html(drawHtml)
     },
 
     // 查看抽奖结果
     result: function () {
+      // 从本地存储取
+      let json = this.storageResult()
+      if (json && json[0]) {
+        this._renderResult(json)
+      } else {
+        this.drawPop({
+          title: '中奖结果',
+          encourage: '您还没有中奖纪录哦！',
+          btn: 'close'
+        })
+      }
+      return false
+
       this.utils.loading.show(this.el)
       this.utils.http({
         url: '../common/json/result.json',
@@ -110,7 +137,8 @@
           } else {
             this.drawPop({
               title: '中奖结果',
-              encourage: '您还没有中奖纪录哦！'
+              encourage: '您还没有中奖纪录哦！',
+              btn: 'close'
             })
           }
           this.utils.loading.close()
@@ -118,7 +146,8 @@
         error: () => {
           this.drawPop({
             title: '中奖结果',
-            encourage: '抽奖结果加载失败'
+            encourage: '抽奖结果加载失败',
+            btn: 'close'
           })
           this.utils.loading.close()
         }
@@ -133,7 +162,8 @@
       $('.result-wrap').addClass('hide')
       this.drawPop({
         title: result.title,
-        encourage: result.reward
+        encourage: result.reward,
+        btn: 'back'
       })
     },
 
@@ -186,8 +216,8 @@
     	'<div class="lottery-wrap draw-wrap hide">' +
         '<p class="title">{{title}}</p>' +
         '<p class="encourage">{{encourage}}</p>' +
-        '<em class="btn-close">关闭</em>' +
-        '<em class="btn-back">返回</em>' +
+        '<em class="btn-close hide">关闭</em>' +
+        '<em class="btn-back hide">返回</em>' +
     	'</div>' +
       ''
 	}
@@ -237,7 +267,6 @@
 
   // 抽奖业务逻辑
   function Raffle () {
-    this.wrapper = $('.button-area')
     this.utils = window.utils
   }
 
@@ -259,7 +288,7 @@
 		 * @param null
 		 * */
     _events: function () {
-      this.wrapper
+      this.element
 				.on('click', '.raffle-result', $.proxy(this._result, this))
 				.on('click', '.raffle-reset', $.proxy(this._reset, this))
       this.extraEvent && this.extraEvent()	//增加额外绑定事件钩子
@@ -269,18 +298,7 @@
     * 实例化抽奖弹窗
     */
     initModal: function (cbk) {
-      let message = this._limit()
-      if (message) {
-        this.utils.toast({
-          msg: message
-        })
-        return false
-      }
-      let count = utils.storage.get('raffle_count') || 0
-      utils.storage.set('raffle_count', ++count)
-      $.controlModal({
-        oauthBack: cbk
-      })
+      $.controlModal({})
     },
 
     /*
@@ -290,10 +308,14 @@
     drawModal: function (cbk) {
       $.controlModal('draw', (status, data) => {
         if (status > 0) {
+          let count = parseInt(utils.storage.get('raffle_count')) || 0
+          utils.storage.set('raffle_count', ++count)
           // 正确返回抽奖结果
           cbk && cbk(1, data)
         } else {
-          this.utils.toast(data)
+          this.utils.toast({
+            msg: data
+          })
         }
       })
     },
@@ -314,7 +336,6 @@
 		 * */
     _result: function () {
       $.controlModal('result', (status, data) => {
-        console.log('status', status, data)
         if (status > 0) {
           // 正确返回抽奖结果
           // cbk && cbk(1, data)
@@ -329,12 +350,12 @@
 		 * @method _limit private
 		 * @param null
 		 * */
-    _limit: function () {
+    limit: function () {
       let message = ''
       let count = utils.storage.get('raffle_count') || 0
       let now = utils.formatTime(null, 'yyyy-MM-dd')
       if (this.options.data) {
-        if (this.options.data.limit_count < count) {
+        if (this.options.data.limit_count <= count) {
           message = '达到抽奖最大次数'
         } else if (this.options.start_time && this.options.start_time > now) {
           message = '抽奖暂未开始'

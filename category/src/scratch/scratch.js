@@ -1,9 +1,10 @@
 ((window) => {
   // 刮刮卡业务逻辑处理
-  function Scratch(options) {
+  function Scratch(options, element) {
     this.options = {
       activityClass: 'activity-status'
     }
+    this.element = $(element)
     $.extend(this.options, options)
     this.init()
   }
@@ -16,11 +17,12 @@
    * @param null
    * */
   Scratch.prototype.extraEvent = function () {
-    // this.initModal(() => {
-    //   // this.drawModal()
-    // })
-    // return false
+    this.initModal()
     this.initEraser()
+    let plat = window.utils.mobileDevice()
+    let ltype = (plat == 'Other') ? 'click' : 'touchstart'
+    this.element
+       .on(ltype, '.img-up', $.proxy( this._scratchLimit, this))	// 关闭弹框
   }
 
   /*
@@ -29,6 +31,10 @@
    * @param null
    * */
   Scratch.prototype.initEraser = function () {
+    let message = this.limit()
+    if (message) {
+      return false
+    }
     $('.scratch-canvas').eraser({
       progressFunction: (progress) => {
         let progressData = Math.round(progress * 100)
@@ -36,11 +42,18 @@
           $('.scratch-canvas').eraser('clear')
           this.drawModal()
           $('.raffle-reset').addClass(this.options.activityClass)
-        } else if (progressData < 5) {
-          this.initModal()
         }
       }
     })
+  }
+
+  Scratch.prototype._scratchLimit = function (event) {
+    let message = this.limit()
+    if (message) {
+      this.utils.toast({
+        msg: message
+      })
+    }
   }
 
   /*
@@ -49,7 +62,14 @@
    * @param null
    * */
   Scratch.prototype.initReset = function () {
-    $('.scratch-canvas').eraser('reset')
+    let message = this.limit()
+    if (message) {
+      this.utils.toast({
+        msg: message
+      })
+      this.element.find('.scratch-canvas').eraser('disable')
+    }
+    this.element.find('.scratch-canvas').eraser('reset')
 		$('.raffle-reset').removeClass(this.options.activityClass)
   }
 

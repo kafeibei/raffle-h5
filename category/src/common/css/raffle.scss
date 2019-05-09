@@ -80,7 +80,8 @@
 
 .result-wrap {
   .results {
-    max-height: 640px;
+    max-height: 480px;
+    min-height: 240px;
     overflow: auto;
     border-radius: 0 0 8px 8px;
   }
