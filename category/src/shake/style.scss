@@ -1,0 +1,78 @@
+.page-container {
+  background-color: #db171d;
+  .shake-content {
+    position: relative;
+    width: 600px;
+    height: 575px;
+    margin: 0 auto;
+  }
+  .shake-area {
+    position: absolute;
+    left: 175px;
+    top: 165px;
+    width: 262px;
+    height: 384px;
+    z-index: 99;
+  }
+  .img-circle {
+    position: relative;
+    z-index: 101;
+  }
+  .shake-button {
+    margin-top: 60px;
+    text-align: center;
+  }
+
+  .raffle-button {
+    display: inline-block;
+    width: 220px;
+  	height: 64px;
+    line-height: 64px;
+    font-size: 28px;
+    font-weight: bold;
+    border:2px solid transparent;
+    border-radius: 5px;
+  }
+
+  .raffle-reset {
+    border-color: #f3c000;
+  	color: #784d00;
+  	background-color:#ffef51;
+  }
+
+  .raffle-result {
+    margin-left: 20px;
+  	border-color: #f5e200;
+  	color: #f5e200;
+  	background-color: transparent;
+  }
+
+  .activity-status {
+    background-color: #fed92e;
+  }
+
+  .shake-animation {
+    animation: quick_rock 1.5s infinite;
+  }
+
+  @keyframes quick_rock {
+    0%, 100%, 70% {
+      transform:rotate(0)
+    }
+    10% {
+      transform:rotate(16deg)
+    }
+    20%, 40% {
+      transform:rotate(-5deg)
+    }
+    30% {
+      transform:rotate(8deg)
+    }
+    50% {
+      transform:rotate(1deg)
+    }
+    60% {
+      transform:rotate(-1deg)
+    }
+  }
+}

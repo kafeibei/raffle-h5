@@ -119,7 +119,7 @@ function server() {
     connect.server({
         name: 'ENV：' + (config.isDev ? 'Development' : 'Production'),
         root: config.pathsDev.html,
-        host: 'app_new.jumaoe.com',
+        host: 'raffle_new.hjx.com',
         port: 8000,
         livereload: true
     });

@@ -68,6 +68,7 @@
         msg: message
       })
       this.element.find('.scratch-canvas').eraser('disable')
+      return false
     }
     this.element.find('.scratch-canvas').eraser('reset')
 		$('.raffle-reset').removeClass(this.options.activityClass)
