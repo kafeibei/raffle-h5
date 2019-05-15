@@ -6,24 +6,25 @@
     border-radius: 8px;
   }
   .instant-content {
-    position: relative;
     width: 610px;
     height: 220px;
-    margin: 40px 30px;
-    padding-left: 200px;
-    padding-top: 64px;
-    background: url('../../common/images/instant.png') no-repeat 60px center #fff;
-    background-size: 108px 108px;
+    padding: 20px;
+    margin: 0 auto 40px;
     border-radius: 8px;
-    &:after {
-      position: absolute;
-      left: 20px;
-      top: 20px;
-      width: 570px;
-      height: 180px;
-      border: 2px dashed #d6dbe9;
-      content: ' ';
-    }
+    background-color: #fff;
+  }
+  .instant-inner {
+    width: 570px;
+    height: 180px;
+    border: 2px dashed #d6dbe9;
+  }
+  .instant-pic {
+    width: 108px;
+    height: 108px;
+    margin-left: 40px;
+  }
+  .instant-info {
+    margin-left: 20px;
   }
   .instant-title {
     font-size: 32px;
@@ -32,7 +33,7 @@
   }
   .instant-reward {
     color: #999;
-    font-size: 24px;
+    font-size: 28px;
   }
   .instant-button {
     text-align: center;

@@ -43,7 +43,9 @@
     })
     this.shakeEvent.start()
     window.addEventListener('shake', () => {
-      this.shakeEventDidOccur()
+      if (this.shake) {
+        this.shakeEventDidOccur()
+      }
     }, false)
   }
 
@@ -54,8 +56,10 @@
       this.shakeAudio.src = this.options.coinMp3
       // this.shakeAudio.loop = false
       this.shakeAudio.play()
-      this.drawModal((status, data) => {
+      this.lotteryModal((status, data) => {
+        this.shake = false
         if (status > 0) {
+          this.drawModal(data)
           this.element.find('.shake-area').removeClass(this.options.shakeClass)
           this.element.find('.raffle-reset').addClass(this.options.activityClass)
         } else {
@@ -80,6 +84,7 @@
       })
       return false
     }
+    this.shake = true
 		this.element.find('.raffle-reset').removeClass(this.options.activityClass)
     this.element.find('.shake-area').addClass(this.options.shakeClass)
   }

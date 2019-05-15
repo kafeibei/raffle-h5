@@ -40,7 +40,9 @@
         let progressData = Math.round(progress * 100)
         if (progressData > 18) {
           $('.scratch-canvas').eraser('clear')
-          this.drawModal()
+          this.lotteryModal((status, data) => {
+            this.drawModal(data)
+          })
           $('.raffle-reset').addClass(this.options.activityClass)
         }
       }

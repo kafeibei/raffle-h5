@@ -12,7 +12,7 @@
 				url: operate.options.dataUrl,
 				success: function (json) {
           if (json) {
-            $('.scratchit').scratch({
+            $('.page-scratchit').scratch({
               data: json
             })
           } else {

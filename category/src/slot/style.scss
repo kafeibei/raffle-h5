@@ -1,0 +1,67 @@
+.page-container {
+  background-color: #73048e;
+  .slot-content {
+    position: relative;
+    width: 620px;
+    height: 491px;
+    margin: 0 auto;
+    background: url('../../common/images/machine.png') no-repeat center;
+    background-size: 620px 491px;
+  }
+  .slot-area {
+    position: absolute;
+    left: 100px;
+    top: 170px;
+    width: 420px;
+    height: 130px;
+    z-index: 99;
+  }
+
+  .slot-machine {
+    width: 130px;
+    border: 8px solid #d14f77;
+    overflow: hidden;
+    &:nth-child(2) {
+      margin: 0 15px;
+    }
+  }
+
+  .slot-box {
+    width: 114px;
+    height: 114px;
+    background-color: #fafafa;
+  }
+
+  .slot-button {
+    margin-top: 60px;
+    text-align: center;
+  }
+
+  .raffle-button {
+    display: inline-block;
+    width: 220px;
+  	height: 64px;
+    line-height: 64px;
+    font-size: 28px;
+    font-weight: bold;
+    border:2px solid transparent;
+    border-radius: 5px;
+  }
+
+  .raffle-reset {
+    border-color: #f3c000;
+  	color: #784d00;
+  	background-color: #ffef51;
+  }
+
+  .raffle-result {
+    margin-left: 20px;
+  	border-color: #f5e200;
+  	color: #f5e200;
+  	background-color: transparent;
+  }
+
+  .activity-status {
+    background-color: #fed92e;
+  }
+}

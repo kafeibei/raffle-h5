@@ -36,12 +36,12 @@
 			   .on(ltype, '.btn-back', $.proxy( this._goBack,this))  //返回
 		},
 
-		draw : function (cbk) {
+		lottery (cbk) {
 			this._lottery(cbk)
 		},
 
- 		_lottery: function (cbk) {
-			this.utils.loading.show(this.el)
+ 		_lottery (cbk) {
+			this.utils.loading.show()
       this.utils.http({
         url: '../common/json/detail.json',
         success: (json) => {
@@ -49,19 +49,7 @@
             let len = json.rewards.length
             let num = this.utils.randomGap(len, 0)
             let result = json.rewards[num]
-            if (result.redeemable) {
-              // 渲染抽奖弹窗
-    					this.drawPop({
-                title: result.title,
-                encourage: result.reward,
-                btn: 'close'
-              })
-              // 本地存储抽奖结果
-              this.storageResult(result)
-    				} else {
-    					//未中奖
-	    				this.noAward()
-    				}
+            result.num = num
             cbk(1, result)
           } else {
             cbk(-1, '奖项设置错误')
@@ -75,6 +63,19 @@
         }
       })
 		},
+
+    draw (result) {
+      if (result.status < 0 || !result.redeemable) {
+        //未中奖
+        this.noAward()
+      } else {
+        // 渲染抽奖弹窗
+        result.btn = 'close'
+        this.drawPop(result)
+        // 本地存储抽奖结果
+        this.storageResult(result)
+      }
+    },
 
     storageResult: function (result) {
       let storageResult = utils.storage.get('raffle_result') || []
@@ -90,21 +91,32 @@
 		noAward: function () {
       this.drawPop({
         title: '很遗憾没有中奖',
-        encourage: '不要气馁，继续加油',
+        reward: '不要气馁，继续加油',
         btn: 'close'
       })
 		},
 
-    drawPop: function (params) {
+    drawPop: function (item) {
       let drawModal = this.el.find('.draw-wrap')
 			if (!drawModal[0]) {
 				drawModal = $(this.options.draw_tpl).appendTo(this.el)
 			}
       let drawHtml = drawModal.removeClass('hide').html()
-      drawHtml = drawHtml.replace(/{{(.*?)}}/g, (string, key) => {
-        return string.replace('{{' + key + '}}', params[key])
+      drawHtml = drawHtml.replace(/{{liv_(.*?)}}/g, (string, key) => {
+        if (key === 'pic') {
+          if (item.pic) {
+            return '<img src="' + item.pic + '" title="' + item.reward + '">'
+          }
+          return ''
+        } else if (key === 'pic_hide') {
+          if (item.pic) {
+            return string.replace('{{liv_' + key + '}}', '')
+          }
+          return 'hide'
+        }
+        return string.replace('{{liv_' + key + '}}', item[key])
       }).replace(/btn-(.*?) hide/g, (string, key) => {
-        if (key === params.btn) {
+        if (key === item.btn) {
           return 'btn-' + key
         } else {
           return string
@@ -122,7 +134,7 @@
       } else {
         this.drawPop({
           title: '中奖结果',
-          encourage: '您还没有中奖纪录哦！',
+          reward: '您还没有中奖纪录哦！',
           btn: 'close'
         })
       }
@@ -137,7 +149,7 @@
           } else {
             this.drawPop({
               title: '中奖结果',
-              encourage: '您还没有中奖纪录哦！',
+              reward: '您还没有中奖纪录哦！',
               btn: 'close'
             })
           }
@@ -146,7 +158,7 @@
         error: () => {
           this.drawPop({
             title: '中奖结果',
-            encourage: '抽奖结果加载失败',
+            reward: '抽奖结果加载失败',
             btn: 'close'
           })
           this.utils.loading.close()
@@ -160,11 +172,8 @@
       let index = self.closest('.result-item').index()
       let result = this.resultData[index]
       $('.result-wrap').addClass('hide')
-      this.drawPop({
-        title: result.title,
-        encourage: result.reward,
-        btn: 'back'
-      })
+      result.btn = 'back'
+      this.drawPop(result)
     },
 
 		_goBack: function () {
@@ -183,8 +192,19 @@
         let result_ul = ''
         let result_li = this.options.result_li
         json.forEach((item, key) => {
-          result_ul += result_li.replace(/{{liv_(.*?)}}/g, (string, kk) => {
-            return string.replace('{{liv_' + kk + '}}', item[kk])
+          result_ul += result_li.replace(/{{liv_(.*?)}}/g, (string, key) => {
+            if (key === 'pic') {
+              if (item.pic) {
+                return '<img src="' + item.pic + '" title="' + item.reward + '">'
+              }
+              return ''
+            } else if (key === 'pic_hide') {
+              if (item.pic) {
+                return string.replace('{{liv_' + key + '}}', '')
+              }
+              return 'hide'
+            }
+            return string.replace('{{liv_' + key + '}}', item[key])
           })
         })
         $(result_ul).appendTo(resultsUl)
@@ -202,20 +222,22 @@
     result_tpl : ''+
     	'<div class="lottery-wrap result-wrap">' +
         '<p class="title">中奖结果</p>' +
-    		'<ul class="results">{liv_results}</ul>' +
+    		'<ul class="results">{{liv_results}}</ul>' +
         '<em class="btn-close">关闭</em>' +
     	'</div>' +
       '',
     result_li: '' +
       '<li class="result-item clear">' +
-        '<span>{{liv_reward}}</span>' +
+        '<span class="img-box result-pic {{liv_pic_hide}}">{{liv_pic}}</span>' +
+        '<span class="result-reward">{{liv_reward}}</span>' +
         '<button class="btn-detail">详情</button>' +
       '</li>' +
       '',
     draw_tpl : '' +
     	'<div class="lottery-wrap draw-wrap hide">' +
-        '<p class="title">{{title}}</p>' +
-        '<p class="encourage">{{encourage}}</p>' +
+        '<p class="title">{{liv_title}}</p>' +
+        '<div class="img-box draw-pic {{liv_pic_hide}}">{{liv_pic}}</div>' +
+        '<p class="reward">{{liv_reward}}</p>' +
         '<em class="btn-close hide">关闭</em>' +
         '<em class="btn-back hide">返回</em>' +
     	'</div>' +
@@ -235,7 +257,7 @@
     		},
     		'_show': (event, options) => {
     			$('.lotteryModal').removeClass('hide')
-    			modal[(options.func == 'detail' ? 'add' : 'remove') + 'Class']("hide")
+    			modal[(options.func == 'lottery' ? 'add' : 'remove') + 'Class']("hide")
             .lotteryModal(options.func, options.cbk)
     		},
     		'_hide': () => {
@@ -305,19 +327,17 @@
     * 获取抽奖结果
     * @method drawModal
     */
-    drawModal: function (cbk) {
-      $.controlModal('draw', (status, data) => {
-        if (status > 0) {
-          let count = parseInt(utils.storage.get('raffle_count')) || 0
-          utils.storage.set('raffle_count', ++count)
-          // 正确返回抽奖结果
-          cbk && cbk(1, data)
-        } else {
-          this.utils.toast({
-            msg: data
-          })
-        }
+    lotteryModal (cbk) {
+      $.controlModal('lottery', (status, data) => {
+        let count = parseInt(utils.storage.get('raffle_count')) || 0
+        utils.storage.set('raffle_count', ++count)
+        cbk && cbk(status, data)
       })
+    },
+
+    // 绘制抽奖结果弹窗
+    drawModal (result) {
+      $.controlModal('draw', result)
     },
 
     /*

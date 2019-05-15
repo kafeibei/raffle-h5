@@ -12,7 +12,7 @@
 				url: operate.options.dataUrl,
 				success: function (json) {
           if (json) {
-            $('.shake').iShare({
+            $('.page-shake').iShare({
               data: json
             })
           } else {

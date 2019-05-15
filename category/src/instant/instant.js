@@ -1,7 +1,21 @@
 (() => {
   function Instant(options, element) {
     this.options = {
-      activityClass: 'activity-status'
+      activityClass: 'activity-status',
+      result_tpl: '' +
+        '<div class="instant-inner hg-flex hg-flex-center">' +
+          '<div class="img-box instant-pic {{liv_pic_hide}}">{{liv_pic}}</div>' +
+          '<div class="hg-flex-one instant-info">' +
+            '<h2 class="instant-title">{{liv_title}}</h2>' +
+            '<p class="instant-reward">{{liv_reward}}</p>' +
+          '</div>' +
+        '</div>' +
+        '',
+        error_tpl: '' +
+          '<div class="instant-inner hg-flex hg-flex-center hg-justify-center">' +
+            '<p class="instant-reward">{{liv_message}}</p>' +
+          '</div>' +
+          ''
     }
     this.element = $(element)
     $.extend(this.options, options)
@@ -34,18 +48,43 @@
       this.utils.toast({
         msg: message
       })
-      this.element.find('.instant-reward').html(message)
-      this.element.find('.instant-title').html('')
+      this.renderInstant(message)
       return false
     }
-    this.drawModal((status, data) => {
+    this.lotteryModal((status, data) => {
       if (status > 0) {
-        this.element.find('.instant-reward').html(data.title)
-        this.element.find('.instant-title').html(data.reward)
+        if (data.redeemable) {
+          this.renderInstant(data)
+        } else {
+          this.renderInstant(data.reward)
+        }
       } else {
-        this.element.find('.instant-reward').html(data)
+        this.renderInstant(data)
       }
     })
+  }
+
+  Instant.prototype.renderInstant = function (item) {
+    let result_tpl
+    if (typeof item === 'string') {
+      result_tpl = this.options.error_tpl.replace('{{liv_message}}', item)
+    } else {
+      result_tpl = this.options.result_tpl.replace(/{{liv_(.*?)}}/g, (string, key) => {
+        if (key === 'pic') {
+          if (item.pic) {
+            return '<img src="' + item.pic + '" title="' + item.reward + '">'
+          }
+          return ''
+        } else if (key === 'pic_hide') {
+          if (item.pic) {
+            return string.replace('{{liv_' + key + '}}', '')
+          }
+          return 'hide'
+        }
+        return string.replace('{{liv_' + key + '}}', item[key])
+      })
+    }
+    this.element.find('.instant-content').removeClass('hide').empty().append(result_tpl)
   }
 
   /*

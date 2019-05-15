@@ -71,10 +71,17 @@
 
 // 未中奖
 .draw-wrap {
-  .encourage {
-    line-height: 160px;
+  padding-bottom: 60px;
+  .draw-pic {
+    width: 120px;
+    height: 120px;
+    margin-top: 40px;
+    line-height: 0;
+  }
+  .reward {
     font-size: 24px;
     color: #999;
+    padding-top: 40px;
   }
 }
 
@@ -90,7 +97,7 @@
     border-bottom: 1px dashed #d6dbe9;
     padding: 16px 30px;
     color: #333;
-    font-size: 14px;
+    font-size: 26px;
     margin-right: 10px;
     &:last-child {
       border-bottom: none;
@@ -106,14 +113,11 @@
     outline: none;
     background-color: transparent;
   }
-}
 
-.result-wrap .noWin {
-  text-align: center;
-  margin-top: 20px;
-  color: #333;
-}
+  .result-pic {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+  }
 
-.result-wrap .no-win {
-  color: #333;
 }

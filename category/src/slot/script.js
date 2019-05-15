@@ -10,16 +10,16 @@
     ajaxInfo: () => {
       window.utils.http({
 				url: operate.options.dataUrl,
-				success: function (json) {
+				success (json) {
           if (json) {
-            $('.page-instant').removeClass('hide').instant({
+            $('.page-slot').slot({
               data: json
             })
           } else {
             console.warn('抽奖信息错误')
           }
 				},
-        error: function (err) {
+        error (err) {
           console.warn('抽奖信息错误')
         }
 			})
