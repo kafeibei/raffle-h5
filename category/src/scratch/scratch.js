@@ -41,6 +41,7 @@
         if (progressData > 18) {
           $('.scratch-canvas').eraser('clear')
           this.lotteryModal((status, data) => {
+            this.element.find('.scratchit-reward').html(data.reward)
             this.drawModal(data)
           })
           $('.raffle-reset').addClass(this.options.activityClass)

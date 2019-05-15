@@ -114,7 +114,7 @@
           }
           return 'hide'
         }
-        return string.replace('{{liv_' + key + '}}', item[key])
+        return string.replace('{{liv_' + key + '}}', item[key] || '')
       }).replace(/btn-(.*?) hide/g, (string, key) => {
         if (key === item.btn) {
           return 'btn-' + key
@@ -204,7 +204,7 @@
               }
               return 'hide'
             }
-            return string.replace('{{liv_' + key + '}}', item[key])
+            return string.replace('{{liv_' + key + '}}', item[key] || '')
           })
         })
         $(result_ul).appendTo(resultsUl)

@@ -63,7 +63,7 @@
       let box_li= ''
       this.options.data.rewards.forEach((item) => {
         box_li += this.options.box_tpl.replace(/{{liv_(.*?)}}/g, (string, key) => {
-          return string.replace('{{liv_' + key + '}}', item[key])
+          return string.replace('{{liv_' + key + '}}', item[key] || '')
         })
       })
       let machine_tpl = ''

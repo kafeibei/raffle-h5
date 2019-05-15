@@ -81,7 +81,7 @@
           }
           return 'hide'
         }
-        return string.replace('{{liv_' + key + '}}', item[key])
+        return string.replace('{{liv_' + key + '}}', item[key] || '')
       })
     }
     this.element.find('.instant-content').removeClass('hide').empty().append(result_tpl)
