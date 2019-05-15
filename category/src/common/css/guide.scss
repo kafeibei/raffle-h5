@@ -1,13 +1,20 @@
-.page-container, .page-content {
+.page-container {
   background-color: #eff1f2;
+  .tips {
+    line-height: 42px;
+    background-color: #fed630;
+    font-size: 12px;
+    color: #ff4346;
+    text-align: center;
+  }
 }
 .page-content {
-  max-width: 1240px;
+  max-width: 750px;
   margin: 0 auto;
 }
 .page-title {
   font-weight: normal;
-  font-size: 20px;
+  font-size: 40px;
   text-align: center;
   padding: 60px 0 40px;
 }
@@ -16,7 +23,7 @@
     position: relative;
     background-color: #fff;
     margin: 0 12px 24px;
-    width: 388px;
+    width: 720px;
     border-radius: 8px;
     overflow: hidden;
   }
@@ -26,13 +33,13 @@
     margin: 15px;
   }
   .raffle-title {
-    line-height: 54px;
-    font-size: 12px;
+    line-height: 72px;
+    font-size: 32px;
     font-weight: normal;
   }
   .raffle-brief {
     color: #999;
-    font-size: 10px;
+    font-size: 26px;
     margin-right: 10px;
   }
 }

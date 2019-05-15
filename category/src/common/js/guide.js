@@ -17,7 +17,14 @@
         ''
     },
     init: () => {
+      operate.tips()
       operate.ajaxInfo()
+    },
+    tips: () => {
+      let plat = window.utils.mobileDevice()
+      if (plat === 'Other') {
+        $('.tips').removeClass('hide')
+      }
     },
     ajaxInfo: () => {
       window.utils.http({
