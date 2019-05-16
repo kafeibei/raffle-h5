@@ -61,7 +61,10 @@ function styles() {
     const processors = [
         pxtoviewport({
             viewportWidth: 750,
-            viewportUnit: 'vmin'
+            unitPrecision: 2,
+            viewportUnit: 'vmin',
+            fontViewportUnit: 'vmin',
+            minPixelValue: 2
         })
     ];
     return src(config.paths.css+'/**/*.scss')

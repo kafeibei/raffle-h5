@@ -28,11 +28,11 @@ let baseConfig = {
 		image	: basePaths+'/dist_test'
 	},
 	pathsBuild: {
-		html	: buildPaths + '/raffle',
-		css		: buildPaths + '/raffle',
-		script	: buildPaths + '/raffle',
-		json 	: buildPaths + '/raffle',
-		image	: buildPaths + '/raffle'
+		html	: buildPaths + '/raffle-h5',
+		css		: buildPaths + '/raffle-h5',
+		script	: buildPaths + '/raffle-h5',
+		json 	: buildPaths + '/raffle-h5',
+		image	: buildPaths + '/raffle-h5'
 	},
 	autoprefixerConfig: {
 		browsers: ['last 2 version']

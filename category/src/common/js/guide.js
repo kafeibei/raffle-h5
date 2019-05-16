@@ -17,14 +17,25 @@
         ''
     },
     init: () => {
-      operate.tips()
+      // operate.tips()
       operate.ajaxInfo()
     },
     tips: () => {
       let plat = window.utils.mobileDevice()
       if (plat === 'Other') {
-        $('.tips').removeClass('hide')
+        $('.qrcode-box').removeClass('hide')
+        operate.qrcode()
       }
+    },
+    qrcode: () => {
+      let qrcode = new QRCode($('.qrcode-area')[0], {
+      	text: window.location.href,
+      	width: 128,
+      	height: 128,
+      	colorDark : "#000",
+      	colorLight : "#fff",
+      	correctLevel : QRCode.CorrectLevel.H
+      })
     },
     ajaxInfo: () => {
       window.utils.http({
