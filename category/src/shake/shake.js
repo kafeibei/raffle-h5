@@ -4,8 +4,8 @@
     this.options = {
       activityClass: 'activity-status',
       shakeClass: 'shake-animation',
-      shakeMp3: '../../common/audio/shake.mp3',
-      coinMp3: '../../common/audio/coin.mp3'
+      shakeMp3: '../common/audio/shake.mp3',
+      coinMp3: '../common/audio/coin.mp3'
     }
     this.element = $(element)
     $.extend(this.options, options)

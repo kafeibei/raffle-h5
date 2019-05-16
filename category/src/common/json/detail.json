@@ -4,27 +4,27 @@
       "reward": "浪琴手表",
       "title": "一等奖",
       "id": "raffle01",
-      "pic": "../../common/images/data/longines.png",
+      "pic": "../common/images/data/longines.png",
       "redeemable": 1
     },
     {
       "reward": "苹果手机",
       "title": "二等奖",
       "id": "raffle02",
-      "pic": "../../common/images/data/iphone.png",
+      "pic": "../common/images/data/iphone.png",
       "redeemable": 1
     },
     {
       "reward": "WEI护肤品",
       "title": "三等奖",
       "id": "raffle03",
-      "pic": "../../common/images/data/skin.png",
+      "pic": "../common/images/data/skin.png",
       "redeemable": 1
     },
     {
       "reward": "谢谢参与~",
       "title": "参与奖",
-      "pic": "../../common/images/data/thanks.png",
+      "pic": "../common/images/data/thanks.png",
       "id": "raffle04"
     }
   ],
