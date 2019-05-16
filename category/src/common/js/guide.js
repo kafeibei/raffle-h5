@@ -2,7 +2,7 @@
   // 入口函数
   let operate = {
     options: {
-      dataUrl: '../common/json/guide.json',
+      dataUrl: './common/json/guide.json',
       tmpl: '' +
         '<li class="raffle-item hg-flex">' +
           '<div class="img-box">' +
@@ -48,7 +48,7 @@
           if (key === 'href') {
             return string.replace('{{liv_href}}', './' + item.key)
           } else if (key === 'src') {
-            return string.replace('{{liv_src}}', '../../common/images/guide/' + item.key + '.png')
+            return string.replace('{{liv_src}}', './common/images/guide/' + item.key + '.png')
           }
           return string.replace('{{liv_' + key + '}}', item[key] || '')
         })

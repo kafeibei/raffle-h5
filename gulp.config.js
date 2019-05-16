@@ -1,4 +1,5 @@
 let basePaths = 'category';
+let buildPaths = '../kafeibei'
 
 let baseConfig = {
 	isDev : true,
@@ -27,11 +28,11 @@ let baseConfig = {
 		image	: basePaths+'/dist_test'
 	},
 	pathsBuild: {
-		html	: basePaths+'/build',
-		css		: basePaths+'/build',
-		script	: basePaths+'/build',
-		json 	: basePaths+'/build',
-		image	: basePaths+'/build'
+		html	: buildPaths + '/raffle',
+		css		: buildPaths + '/raffle',
+		script	: buildPaths + '/raffle',
+		json 	: buildPaths + '/raffle',
+		image	: buildPaths + '/raffle'
 	},
 	autoprefixerConfig: {
 		browsers: ['last 2 version']
@@ -43,7 +44,7 @@ let baseConfig = {
 	pxToViewport: true
 }
 
-let projectConfig = require('./'+basePaths+'/project.config');
+let projectConfig = require('./' + basePaths + '/project.config');
 
 for ( let k in projectConfig ) {
 	if ( projectConfig[k] != undefined) {

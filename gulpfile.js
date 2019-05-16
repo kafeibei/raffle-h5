@@ -78,7 +78,7 @@ exports.styles = styles;
 
 // images
 function images() {
-    return src( [config.paths.image+'/**/images/*','!'+config.paths.image+'/sprite/*'] )
+    return src( [config.paths.image+'/**/images/*',config.paths.image+'/**/images/**/*','!'+config.paths.image+'/sprite/*'] )
         .pipe( config.isDev ? changed( config.pathsDev.html ) : gutil.noop() )
         .pipe(imagemin({
             progressive: true,
@@ -97,6 +97,13 @@ function json() {
         .pipe(dest( config.pathsDev.script ))
 };
 exports.json = json;
+
+// audio
+function audio() {
+    return src([config.paths.json+'/**/*.mp3'])
+        .pipe(dest( config.pathsDev.script ))
+};
+exports.audio = audio;
 
 // scripts
 function scripts() {
@@ -156,7 +163,9 @@ exports.watch = watchList;
 
 // clean
 function clean() {
-    return del([config.pathsDev.html + '/**']).then(() => {
+    return del([config.pathsDev.html + '/**'], {
+      force: true
+    }).then(() => {
         console.log('项目初始化清理完成...');
     });
 }
@@ -166,7 +175,7 @@ exports.clean = clean;
 exports.default = series(parallel(server, watchList));
 
 // init/build
-exports.init = series(clean, html, styles, images, scripts, json, copycss, copyjs, (done) => {
+exports.init = series(clean, html, styles, images, scripts, json, audio, copycss, copyjs, (done) => {
     console.log('项目初始化构建完成...');
     done();
 })
