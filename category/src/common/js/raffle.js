@@ -313,6 +313,9 @@
       this.element
 				.on('click', '.raffle-result', $.proxy(this._result, this))
 				.on('click', '.raffle-reset', $.proxy(this._reset, this))
+      $('.button-home').click(() => {
+        this.backHome()
+      })
       this.extraEvent && this.extraEvent()	//增加额外绑定事件钩子
     },
 
@@ -384,6 +387,16 @@
         }
       }
       return message
+    },
+
+    backHome: function () {
+      let pathname = window.location.pathname
+      let pathsplit = pathname.split('/')
+      console.log('split', pathsplit)
+      if (pathsplit && pathsplit.length > 1) {
+        let pathjoin = pathsplit.slice(0, -2).join('/')
+        window.location.href = window.location.origin + pathjoin
+      }
     }
   }
 

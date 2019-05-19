@@ -17,7 +17,7 @@
         ''
     },
     init: () => {
-      // operate.tips()
+      operate.tips()
       operate.ajaxInfo()
     },
     tips: () => {
@@ -43,6 +43,7 @@
 				success (json) {
           if (json && json[0]) {
             operate.renderView(json)
+            operate.clearStorage()
           } else {
             console.warn('引导页信息错误')
           }
@@ -65,6 +66,19 @@
         })
       })
       $('.page-guide').append(li_tmpl)
+    },
+    clearStorage: () => {
+      $('.clear-button').removeClass('hide').find('.btn-clear').click(() => {
+        window.utils.modal({
+          id: 'clearStorage',
+          brief: '您确定要清除抽奖数据吗？',
+          okBack: () => {
+            window.utils.storage.remove('raffle_count')
+            window.utils.storage.remove('raffle_result')
+            window.location.reload()
+          }
+        })
+      })
     }
   }
   operate.init()

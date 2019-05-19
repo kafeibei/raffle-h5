@@ -161,6 +161,43 @@
 		}, param.delay)
   }
 
+  utils.modal = (options) => {
+    options = $.extend({
+      title: '提示',
+      brief: '',
+      id: '',
+      ok: '确定',
+      cancel: '取消'
+    }, options)
+		let modal = $('#' + options.id)
+		if (!modal.length) {
+			let tmpl =
+				'<div class="modal-page hide" id="' + options.id + '">'+
+					'<div class="modal-box">'+
+						'<p class="modal-title">{{liv_title}}</p>'+
+						'<p class="modal-brief">{{liv_brief}}</p>'+
+						'<div class="modal-button">' +
+							'<a class="btn btn-middle btn-default btn-cancel" attr="cancel">{{liv_cancel}}</a>' +
+							'<a class="btn btn-middle btn-primary btn-ok" attr="ok">{{liv_ok}}</a>' +
+						'</div>'+
+					'</div>'+
+				'</div>'
+			modal = $(tmpl).appendTo('body')
+		}
+		modal.off('click', '.btn')
+			.on('click', '.btn', function() {
+				var attr = $(this).attr('attr')
+				options[attr + 'Back'] && options[attr + 'Back']()
+				modal.addClass('hide')
+			})
+
+		let modalHtml = modal.removeClass('hide').html()
+    modalHtml = modalHtml.replace(/{{liv_(.*?)}}/g, (string, key) => {
+      return string.replace('{{liv_' + key + '}}', options[key] || '')
+    })
+    modal.html(modalHtml)
+	}
+
   utils.storage = {
 		set: (key, value, time, method) => {
 			method = method || 'localStorage'
